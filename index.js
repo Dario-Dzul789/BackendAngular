@@ -30,7 +30,7 @@ db.connect((err) => {
     console.error('Error de conexión:', err.message);
     return;
   }
-  console.log('Conectado a MySQL vía URI con SSL');
+  console.log(database);
 });
 
 // LOGIN
