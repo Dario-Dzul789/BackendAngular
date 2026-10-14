@@ -18,7 +18,7 @@ const db = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_DATABASE,
   ssl: {
-    rejectUnauthorized: true // Opcional: requerido si no se usa certificado CA explícito
+    rejectUnauthorized: false // Opcional: requerido si no se usa certificado CA explícito
   }
 });
 
