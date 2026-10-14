@@ -23,6 +23,8 @@ const db = mysql.createConnection({
   }
 });
 
+//comit15
+
 //const db = mysql.createConnection(process.env.DATABASE_URL);
 
 db.connect((err) => {
