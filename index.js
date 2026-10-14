@@ -22,7 +22,7 @@ const db = mysql.createConnection({
     rejectUnauthorized: false // Opcional: requerido si no se usa certificado CA explícito
   }
 });
-//
+
 //const db = mysql.createConnection(process.env.DATABASE_URL);
 
 db.connect((err) => {
