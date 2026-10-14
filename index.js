@@ -32,7 +32,7 @@ db.connect((err) => {
   }
   else
   {
-    console.log('Conectado a MySQL vía URI con SSL');
+    console.log('Conectado a la base de datos:', db.config.database);
   }
   
 });
