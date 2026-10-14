@@ -11,6 +11,7 @@ app.use(express.json());
 //app2.use(cors());
 //app2.use(express.json());
 
+/*
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
   user: process.env.DB_USER,
@@ -19,6 +20,16 @@ const db = mysql.createConnection({
   ssl: {
     rejectUnauthorized: false // Opcional: requerido si no se usa certificado CA explícito
   }
+});
+*/
+const db = mysql.createConnection(process.env.DATABASE_URL);
+
+db.connect((err) => {
+  if (err) {
+    console.error('Error de conexión:', err.message);
+    return;
+  }
+  console.log('Conectado a MySQL vía URI con SSL');
 });
 
 // LOGIN
@@ -360,6 +371,7 @@ app.get('/chats/nombres/:idemisor/:idreceptor', (req, res) => {
 app.listen(3000, () => {
   console.log('Servidor corriendo en puerto 3000');
 });
+
 
 
 
