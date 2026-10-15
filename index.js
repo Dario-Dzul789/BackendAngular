@@ -305,9 +305,9 @@ app.post('/ventas', (req, res) => {
   VALUES(?,?,?,?)`
   //console.log(FechaIngresar.toISOString())
   console.log(parametro);
-  //db.query(query, [id_venta, productos, total_venta, fecha_venta], (err, result)=>{
+  db.query(query, [id_venta, productos, total_venta, fecha_venta], (err, result)=>{
   //db.query(query, [id_venta, productos, total_venta, ahora], (err, result)=>{
-  db.query(query, [id_venta, productos, total_venta, FechaNuevo], (err, result)=>{
+  //db.query(query, [id_venta, productos, total_venta, FechaNuevo], (err, result)=>{
       if(err) {
           console.error(err)
           return res.status(500).send('Error al registrar la venta')
