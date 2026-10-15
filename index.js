@@ -71,18 +71,6 @@ app.post('/usuarios', (req, res) => {
 
 // CREATE PRODUCTOS
 app.post('/productos', (req, res) => {
-  const { codigo, nombre, precio, existencia } = req.body;
-  db.query(
-      'INSERT INTO productos (codigo, nombre, precio, existencia) VALUES (?, ?, ?, ?)',
-      [codigo, nombre, precio, existencia],
-      (err, result2) => {
-          if (err) return res.status(500).json({ error: err.message });
-          res.json({ id: result2.insertId });
-      }
-  );
-});
-/*
-app.post('/productos', (req, res) => {
   const { codigo,nombre, precio,existencia } = req.body;
   db.query('INSERT INTO productos (codigo,nombre, precio,existencia) VALUES (?, ?,?,?)', [codigo, nombre, precio,existencia], (err, result2) => {
 
@@ -94,7 +82,6 @@ app.post('/productos', (req, res) => {
     //if (err) return res.json(err);
   });
 });
-*/
 
 
 // READ USUARIOS
