@@ -34,7 +34,7 @@ const db = mysql.createConnection({
 });
 
 //const db = mysql.createConnection(process.env.DATABASE_URL);
-
+/*
 db.connect((err) => {
   if (err) {
     console.error('Error de conexión:', err.message);
@@ -46,7 +46,18 @@ db.connect((err) => {
   }
   
 });
-
+*/
+db.connect((err) => {
+  if (err) {
+    console.error('Error de conexión:', err.message);
+    return;
+  }
+  else
+  {
+    console.log('Conectado a la base de datos');
+  }
+  
+});
 // LOGIN
 app.get('/usuarios/login/:nombre/:contrasena', (req, res) => {
   const { nombre, contrasena } = req.params
