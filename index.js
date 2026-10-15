@@ -82,7 +82,7 @@ app.post('/productos', (req, res) => {
     //if (err) return res.json(err);
   });
 });
-
+//
 
 // READ USUARIOS
 app.get('/usuarios', (req, res) => {
