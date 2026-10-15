@@ -4,8 +4,18 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+
+// Configuración de CORS
+const corsOptions = {
+  origin: process.env.ALLOWED_ORIGIN || '*', // Ej: 'https://tu-frontend.com'
+  credentials: true, // Si necesitas enviar cookies o headers de autenticación
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 //const app2 = express();
 //app2.use(cors());
