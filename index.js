@@ -80,7 +80,7 @@ app.post('/usuarios', (req, res) => {
 });
 
 // CREATE PRODUCTOS
-/*
+
 app.post('/productos', (req, res) => {
   const { codigo,nombre, precio,existencia } = req.body;
   db.query('INSERT INTO productos (codigo,nombre, precio,existencia) VALUES (?, ?,?,?)', [codigo, nombre, precio,existencia], (err, result2) => {
@@ -88,29 +88,12 @@ app.post('/productos', (req, res) => {
     db.query('SELECT LAST_INSERT_ID() As id', (err, result) => {
       console.log('ID del registro insertado:', result);
       res.json(result);
-      console.log(result);
+      console.log('SELECT LAST_INSERT_ID() As id');
     });
-    if (err) return res.json(err);
+    //if (err) return res.json(err);
   });
 });
-*/
-app.post('/productos', (req, res) => {
-  const { codigo, nombre, precio, existencia } = req.body;
 
-  db.query(
-    'INSERT INTO productos (codigo, nombre, precio, existencia) VALUES (?, ?, ?, ?)',
-    [codigo, nombre, precio, existencia],
-    (err, result2) => {
-      if (err) return res.status(400).json({ error: err.message }); // ← aquí, no fuera
-
-      db.query('SELECT LAST_INSERT_ID() AS id', (err, result) => {
-        if (err) return res.status(400).json({ error: err.message });
-        res.json(result);
-      });
-    }
-  );
-});
-//
 // READ USUARIOS
 app.get('/usuarios', (req, res) => {
   db.query('SELECT * FROM usuarios', (err, result) => {
