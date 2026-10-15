@@ -110,6 +110,7 @@ app.post('/productos', (req, res) => {
     }
   );
 });
+//
 // READ USUARIOS
 app.get('/usuarios', (req, res) => {
   db.query('SELECT * FROM usuarios', (err, result) => {
