@@ -371,7 +371,8 @@ app.post('/chats', (req, res) => {
 // CHATS
 app.get('/chats/:idemisor/:idreceptor', (req, res) => {
   const { idemisor, idreceptor } = req.params
-  const query = `SELECT * FROM chats WHERE (idemisor = ? AND idreceptor= ?) OR (idreceptor= ? AND idemisor = ?)`
+  //const query = `SELECT * FROM chats WHERE (idemisor = ? AND idreceptor= ?) OR (idreceptor= ? AND idemisor = ?)`
+  const query = `SELECT * FROM chats WHERE (idemisor = ? AND idreceptor= ?) OR (idreceptor= ? AND idemisor = ?) order by id desc`
   db.query(query, [idemisor, idreceptor, idemisor, idreceptor], (err, results) => { 
       if(err) {
           console.error(err)
@@ -384,7 +385,8 @@ app.get('/chats/:idemisor/:idreceptor', (req, res) => {
 // CHATS CON NOMBRES
 app.get('/chats/nombres/:idemisor/:idreceptor', (req, res) => {
   const { idemisor, idreceptor } = req.params
-  const query = `SELECT c.id AS id,u.id AS ide,us.id AS idr, u.nombre AS emisor ,c.mensaje AS mensaje, us.nombre as receptor FROM chats c INNER JOIN usuarios u ON u.id=c.idemisor INNER JOIN usuarios us ON us.id=c.idreceptor WHERE (c.idemisor = ? AND c.idreceptor= ?) OR (c.idreceptor= ? AND c.idemisor = ?)`
+  //const query = `SELECT c.id AS id,u.id AS ide,us.id AS idr, u.nombre AS emisor ,c.mensaje AS mensaje, us.nombre as receptor FROM chats c INNER JOIN usuarios u ON u.id=c.idemisor INNER JOIN usuarios us ON us.id=c.idreceptor WHERE (c.idemisor = ? AND c.idreceptor= ?) OR (c.idreceptor= ? AND c.idemisor = ?)`
+  const query = `SELECT c.id AS id,u.id AS ide,us.id AS idr, u.nombre AS emisor ,c.mensaje AS mensaje, us.nombre as receptor FROM chats c INNER JOIN usuarios u ON u.id=c.idemisor INNER JOIN usuarios us ON us.id=c.idreceptor WHERE (c.idemisor = ? AND c.idreceptor= ?) OR (c.idreceptor= ? AND c.idemisor = ?) order by chats.id desc`
   db.query(query, [idemisor, idreceptor, idemisor, idreceptor], (err, results) => { 
       if(err) {
           console.error(err)
