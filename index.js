@@ -8,7 +8,8 @@ const app = express();
 // Configuración de CORS
 const corsOptions = {
   //origin: process.env.ALLOWED_ORIGIN || '*', // Ej: 'https://tu-frontend.com'
-  origin: process.env.ALLOWED_ORIGIN || 'https://frontendangular-so61.onrender.com', // Ej: 'https://tu-frontend.com'
+  //origin: process.env.ALLOWED_ORIGIN || 'https://frontendangularsubidoainternet.com', // Ej: 'https://tu-frontend.com'
+  origin: process.env.FRONTEND_URL, // Ej: 'https://tu-frontend.com'
   //'http://localhost:3000', // Tu frontend local específico
   //'http://127.0.0.1:3000', // Alternativa a localhost
   //'https://tu-dominio-prod.com' // Tu frontend desplegado (opcional)
