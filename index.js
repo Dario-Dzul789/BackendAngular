@@ -91,15 +91,14 @@ timeZone2= timeZone2.replace("-", "/");
 // 3. Configurar el formateador con la zona horaria deseada
 const opciones = {
   //timeZone: 'America/Mexico_City', // Cambiar por la zona deseada
-  //timeZone: timeZone2, // Cambiar por la zona deseada
+  timeZone: timeZone2, // Cambiar por la zona deseada
   year: 'numeric',
   month: '2-digit',
   day: '2-digit',
   hour: '2-digit',
   minute: '2-digit',
   second: '2-digit',
-  hour12: false,
-  timeZone: timeZone2
+  hour12: false
 };
 
 const formato = new Intl.DateTimeFormat('es-ES', opciones);
@@ -318,15 +317,14 @@ timeZone2= timeZone2.replace("-", "/");
 // 3. Configurar el formateador con la zona horaria deseada
 const opciones = {
   //timeZone: 'America/Mexico_City', // Cambiar por la zona deseada
-  //timeZone: timeZone2, // Cambiar por la zona deseada
+  timeZone: timeZone2, // Cambiar por la zona deseada
   year: 'numeric',
   month: '2-digit',
   day: '2-digit',
   hour: '2-digit',
   minute: '2-digit',
   second: '2-digit',
-  hour12: false,
-  timeZone: timeZone2
+  hour12: false
 };
 
 const formato = new Intl.DateTimeFormat('es-ES', opciones);
