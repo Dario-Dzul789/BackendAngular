@@ -78,21 +78,54 @@ app.get('/usuarios/login/:nombre/:contrasena', (req, res) => {
 
 
 // CREATE USUARIOS
-app.post('/usuarios', (req, res) => {
+app.post('/usuarios/:timeZone', (req, res) => {
+  const { timeZone } = req.params;
   const { nombre,contrasena ,email,fecha_nacimiento,signo } = req.body;
-  const fechaNacimiento = new Date(fecha_nacimiento)
-  let fechaNacimientoStr = fechaNacimiento.toISOString().split('T')[0]
+  // 1. La fecha recibida (ej. formato ISO 8601, que es UTC por defecto si termina en 'Z')
+//const fechaRecibida = "2026-10-20T15:30:00.000Z";
+
+// 2. Crear el objeto Date
+const fechaObj = new Date(fecha_nacimiento);
+let timeZone2= timeZone;
+timeZone2= timeZone2.replace("-", "/");
+// 3. Configurar el formateador con la zona horaria deseada
+const opciones = {
+  //timeZone: 'America/Mexico_City', // Cambiar por la zona deseada
+  //timeZone: timeZone2, // Cambiar por la zona deseada
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false,
+  timeZone: timeZone2
+};
+
+const formato = new Intl.DateTimeFormat('es-ES', opciones);
+const partes = formato.formatToParts(fechaObj);
+
+// Construcción manual del string YYYY-MM-DD HH:mm:ss
+const fechaFormateada = `${partes.find(p => p.type === 'year').value}-${partes.find(p => p.type === 'month').value}-${partes.find(p => p.type === 'day').value} ${partes.find(p => p.type === 'hour').value}:${partes.find(p => p.type === 'minute').value}:${partes.find(p => p.type === 'second').value}`;
+
+
+  //fechaConfiguradaStr=fechaConfiguradaStr.replace(",","");
+  //fechaConfiguradaStr=fechaConfiguradaStr.replaceAll("/","-");
   //db.query('INSERT INTO usuarios (nombre,contrasena, email,fecha_nacimiento,signo) VALUES (?, ?, ?,?,?)', [nombre, contrasena, email,fecha_nacimiento,signo], (err, result) => {
-  db.query('INSERT INTO usuarios (nombre,contrasena, email,fecha_nacimiento,signo) VALUES (?, ?, ?,?,?)', [nombre, contrasena, email,fechaNacimientoStr,signo], (err, result) => {
+  db.query('INSERT INTO usuarios (nombre,contrasena, email,fecha_nacimiento,signo) VALUES (?, ?, ?,?,?)', [nombre, contrasena, email,fechaFormateada,signo], (err, result) => {
+    //console.log(err);
     if (err) return res.json(err);
     res.json(result);
+    
   });
-  console.log("nombre "+nombre)
-  console.log("contrasena "+contrasena)
-  console.log("email "+email)
-  console.log("fecha_nacimiento "+fecha_nacimiento)
-  console.log("fechaNacimientoStr "+fechaNacimientoStr)
-  console.log("signo "+signo)
+  console.log("fechaConfigurada "+fechaFormateada);
+  console.log(timeZone2);
+  //console.log("nombre "+nombre)
+  //console.log("contrasena "+contrasena)
+  //console.log("email "+email)
+  //console.log("fecha_nacimiento "+fecha_nacimiento)
+  //console.log("fechaNacimientoStr "+fechaNacimientoStr)
+  //console.log("signo "+signo)
 });
 
 // CREATE PRODUCTOS
@@ -263,52 +296,44 @@ app.get('/ventas/fechas/:inicio/:fin', (req, res) => {
 
 // RUTA PARA AGREGAR REGISTRO DE VENTAS
 // CODIGO-PRODUCTO-PRE_PUBLICO-CANTIDAD-TOTAL_TOTALVENTA_USUARIO 
-app.post('/ventas', (req, res) => {
+app.post('/ventas/:timeZone', (req, res) => {
+  const { timeZone } = req.params;
   const { id_venta2, productos, total_venta, fecha_venta } = req.body
 
   if( !productos) {
       return res.status(400).send('No se recibio la venta')
   }
-
-  const fechay = new Date()
-  // FORMATEAR FECHA EN YYYY-MM-DD
-  const anio =fechay.getFullYear()
-  const mes = String(fechay.getMonth() + 1).padStart(2, '0') 
-  const dia = String(fechay.getDate()).padStart(2, '0')
-
   const id_venta = Date.now().toString()
 
   // crea un nuevo objeto `Date`
-  var ahora = new Date();
  
-  // obtener la fecha y la hora
-  //var now = today.toLocaleString();
+ 
+   // 1. La fecha recibida (ej. formato ISO 8601, que es UTC por defecto si termina en 'Z')
+//const fechaRecibida = "2026-10-20T15:30:00.000Z";
 
-  // CREAR EL STRING EN EL FORMATO DESEADO
-  const fecha_ventak = `${anio}-${mes}-${dia}`
-  var FechaIngresar= new Date(fecha_venta)
-  let Hora= FechaIngresar.getHours();
-  //let Hora= FechaIngresar.toLocaleTimeString().split(':')[0];
-  //let Minutos= FechaIngresar.toLocaleTimeString().split(':')[1];
-  //let Segundos= FechaIngresar.toLocaleTimeString().split(':')[2];
-  let parametroJunto=FechaIngresar.toLocaleTimeString();
-  let parametro=parametroJunto[parametroJunto.length-4]+parametroJunto[parametroJunto.length-3]+parametroJunto[parametroJunto.length-2]+parametroJunto[parametroJunto.length-1];
-  /*if(parametro=="p.m."){
-    Hora=parseInt(Hora)+12
-  }
-  */
-  let diaGuion=FechaIngresar.toLocaleDateString().split('/')[0]
-  let mesGuion=FechaIngresar.toLocaleDateString().split('/')[1]
-  let anioGuion=FechaIngresar.toLocaleDateString().split('/')[2]
-  let FechaGuion=anioGuion+"-"+mesGuion+"-"+diaGuion
-  let FechaNuevo=FechaGuion + " "+Hora+":"+FechaIngresar.getUTCMinutes()+":"+FechaIngresar.getUTCSeconds()+"."+FechaIngresar.getUTCMilliseconds()
+// 2. Crear el objeto Date
+const fechaObj = new Date(fecha_venta);
+let timeZone2= timeZone;
+timeZone2= timeZone2.replace("-", "/");
+// 3. Configurar el formateador con la zona horaria deseada
+const opciones = {
+  //timeZone: 'America/Mexico_City', // Cambiar por la zona deseada
+  //timeZone: timeZone2, // Cambiar por la zona deseada
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  second: '2-digit',
+  hour12: false,
+  timeZone: timeZone2
+};
 
+const formato = new Intl.DateTimeFormat('es-ES', opciones);
+const partes = formato.formatToParts(fechaObj);
 
-  // SEPARAR LOS PRODUCTOS Y EL TOTAL DE LA VENTA(ASUMIENDO QUE VENTA VIENE COMO UN STRING 'PRODUCTOS_TOTALES')
-  //const productosString = venta.split('_')
-  //const productos = productosString[0]
-
-  //const total_venta = parseFloat(productosString[1])
+// Construcción manual del string YYYY-MM-DD HH:mm:ss
+const fechaFormateada = `${partes.find(p => p.type === 'year').value}-${partes.find(p => p.type === 'month').value}-${partes.find(p => p.type === 'day').value} ${partes.find(p => p.type === 'hour').value}:${partes.find(p => p.type === 'minute').value}:${partes.find(p => p.type === 'second').value}`;
 
 
   // VALIDAR EL TOTAL DE LA VENTA
@@ -320,9 +345,9 @@ app.post('/ventas', (req, res) => {
   const query = `INSERT INTO ventas(id_venta, productos, total_venta, fecha_venta) 
   VALUES(?,?,?,?)`
   //console.log(FechaIngresar.toISOString())
-  console.log(parametro);
+  
   //db.query(query, [id_venta, productos, total_venta, fecha_venta], (err, result)=>{
-  db.query(query, [id_venta, productos, total_venta, ahora], (err, result)=>{
+  db.query(query, [id_venta, productos, total_venta, fechaFormateada], (err, result)=>{
   //db.query(query, [id_venta, productos, total_venta, FechaNuevo], (err, result)=>{
       if(err) {
           console.error(err)
@@ -342,7 +367,7 @@ app.post('/ventas', (req, res) => {
   })
   console.log(id_venta);
   
-  console.log(FechaNuevo);   
+  console.log(fechaFormateada);   
 })
 
 // CREATE VENTASDETALLES
