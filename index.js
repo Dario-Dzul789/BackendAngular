@@ -293,6 +293,55 @@ app.get('/ventas/fechas/:inicio/:fin', (req, res) => {
   console.log(fechaFinStr);
 })
 
+// RUTA PARA OBTENER LAS VENTAS EN UN RANGO DE FECHAS 
+app.get('/ventas/fechasreporte/:inicio/:fin', (req, res) => {
+  const { inicio, fin } = req.params
+
+  if(!inicio || !fin) {
+      return res.status (400).send('Las fechas son obligatorias')
+  }
+
+  const fechaInicio = new Date(inicio)
+  const fechaFin = new Date(fin)
+
+
+  // VALIDAMOS QUE LAS FECHAS SEAN CORRECTAS
+  if(isNaN(fechaInicio.getTime()) || isNaN(fechaFin.getTime())) {
+      return res.status(400).send('Las fechas proporcionadas no son validas')
+  }
+
+  // ASEGURAMOS QUE LA FECHA INICIO NO SEA MAYOR A FECHA FINAL
+  if (fechaInicio > fechaFin) {
+      return res.status(400).send('La fecha de inicio no puede ser posterior a la fecha final')
+  }
+
+  // FORMATEAMOS LAS FECHAS YYYY-MM-DD PARA LA CONSULTA SQL 
+  let fechaInicioStr = fechaInicio.toISOString().split('T')[0] +" 00:00:00.000"
+  //let fechaInicioStr = inicio.toISOString().split('T')[0] 
+ 
+
+  let fechaFinStr = fechaFin.toISOString().split('T')[0]+ " 23:59:59.999"
+  //let fechaFinStr = fin.toISOString().split('T')[0]
+
+  
+
+  const query = `select v.id,v.fecha_venta,p.codigo,p.nombre as producto,vd.cantidad,vd.precio_producto,vd.total_producto, v.total_venta from ventasdetalles vd inner join ventas v on vd.idventa=v.id inner join productos p ON p.id=vd.idproducto WHERE fecha_venta BETWEEN ? AND ?`
+
+  //db.query(query, [inicio, fin], (err, results) => { 
+  db.query(query, [fechaInicioStr, fechaFinStr], (err, results) => { 
+      if(err) {
+          console.error(err)
+          return res.status(500).send('Error al obtener las ventas')
+      }
+      res.json(results);
+  })
+  //console.log(fechaInicio);
+  //console.log(fechaFinStr);
+  console.log("Fechas");
+  console.log(fechaInicioStr);
+  console.log(fechaFinStr);
+})
+
 // RUTA PARA AGREGAR REGISTRO DE VENTAS
 // CODIGO-PRODUCTO-PRE_PUBLICO-CANTIDAD-TOTAL_TOTALVENTA_USUARIO 
 app.post('/ventas/:timeZone', (req, res) => {
