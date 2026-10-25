@@ -244,6 +244,17 @@ app.get('/productos/:codigo', (req, res) => {
   });
 });
 
+// BUSCAR PRODUCTO POR NOMBRE
+app.get('/productos/nombre/:nombre', (req, res) => {
+  const { nombre } = req.params;
+  console.log("nombre "+nombre)
+  db.query('SELECT * FROM productos WHERE nombre LIKE ?', ['%' + nombre + '%'], (err, result) => {
+    console.log("error "+err)
+    if (err) return res.json(err);
+      res.json(result);
+  });
+});
+
 // RUTA PARA OBTENER LAS VENTAS EN UN RANGO DE FECHAS 
 app.get('/ventas/fechas/:inicio/:fin', (req, res) => {
   const { inicio, fin } = req.params
